@@ -1,0 +1,31 @@
+package PayconiqRestAssuredBDDFramework.testscript;
+
+import org.testng.annotations.BeforeClass;
+
+import PayconiqRestAssuredBDDFramework.util.*;
+import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+
+public class CrudGistApi {
+	
+	//First, I declared Response and JsonPath objects.
+    private Response res = null; //Response object
+    private JsonPath jp = null; //JsonPath object
+ 
+    /*
+    Second, we should do setup operations, get JSON response from the API and put it into JsonPath object
+    Then we will do query and manipulations with JsonPath class’s methods.
+    We can do all of the preparation operations after @Before Junit annotation.
+    */
+    @BeforeClass
+    public void setup (){
+        //Test Setup
+        Base.setBaseURI("https://api.github.com/gists"); //Setup Base URL
+        //Base.setBasePath("search"); //Setup Base Path
+        Base.setContentType(ContentType.JSON); //Setup Content Type
+        res = Base.getResponse(); //Get response
+        jp = Base.getJsonPath(res); //Get JsonPath
+    }
+
+}

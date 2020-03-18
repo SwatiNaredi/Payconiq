@@ -1,0 +1,73 @@
+package PayconiqRestAssuredBDDFramework.util;
+
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.ContentType;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+import org.json.JSONObject;
+import static io.restassured.RestAssured.*;
+
+public class Base {
+	
+	static String username="rohit1212s";
+	static String password="Winnner1";
+	static String postAPIBody = "{\r\n" + "  \"description\": \"Hello World Examples\",\r\n" + "  \"public\": true,\r\n"
+			+ "  \"files\": {\r\n" + "    \"hello_world_python.txt\": {\r\n"
+			+ "      \"content\": \"Run `python hello_world.py` to print Hello World\"\r\n" + "    }\r\n"
+			+ "  }\r\n" + "}";
+	
+    //Global Setup Variables
+    public static String path; //Rest request path
+ 
+    //Set base URI before test
+    public static void setBaseURI (String baseURI){
+        RestAssured.baseURI = baseURI;
+    }
+ 
+    // Set base path before test
+    public static void setBasePath(String basePathTerm){
+        RestAssured.basePath = basePathTerm;
+    }
+    
+    //Set Content Type
+    public static void setContentType (ContentType Type){
+        given().contentType(Type);
+    }
+ 
+    //Reset base URI after test
+    public static void resetBaseURI (){
+        RestAssured.baseURI = null;
+    }
+ 
+    //Reset base path after test
+    public static void resetBasePath(){
+        RestAssured.basePath = null;
+    }
+ 
+    //Fetch the API Response
+    public static Response getResponse(String baseURI) {
+    	
+    	RequestSpecBuilder builder = new RequestSpecBuilder();
+
+		// Setting API's Body
+		builder.setBody(postAPIBody);
+		
+		// Setting content type as application/json
+		builder.setContentType("application/json; charset=UTF-8");
+		
+		RequestSpecification requestSpec = builder.build();
+		
+		Response response = given().auth().preemptive().basic(username,password).spec(requestSpec).when()
+				.post(baseURI);
+		
+		return response;
+    }
+    
+    //Convert API Response to String
+    public static JSONObject getResponseBody(Response response) {
+    	JSONObject JSONResponseBody = new JSONObject(response.body().asString());
+    	return JSONResponseBody;
+    }
+}

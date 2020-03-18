@@ -1,0 +1,43 @@
+package PayconiqRestAssuredBDDFramework.util;
+
+import static io.restassured.RestAssured.given;
+
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class BasicAuthentication {
+	
+	@BeforeTest
+	public void basicAuthentication() {
+		 
+		given().auth().preemptive().basic("rohit1212s", "Winnner1").
+		when()
+			.get("https://api.github.com/gists").then().assertThat().statusCode(200);
+			
+		}
+	
+	//@BeforeTest
+	public void verifyDescription1() {
+		String restAPIUrl = "https://api.github.com/gists";
+
+		/*
+		 * given(). when(). post("https://api.github.com/gists").
+		 * then().body("description", equalToIgnoringCase("Hello World Examples"));
+		 */
+		
+		
+		 RequestSpecBuilder builder = new RequestSpecBuilder();
+		 RequestSpecification requestSpec = builder.build();
+		 
+		 Response response = given().auth().preemptive().basic("rohit1212s", "Winnner1")
+				 .spec(requestSpec).when().post(restAPIUrl);
+		    System.out.println(response.asString());
+			
+	}
+	
+
+}

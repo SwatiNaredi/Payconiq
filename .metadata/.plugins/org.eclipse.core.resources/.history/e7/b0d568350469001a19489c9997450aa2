@@ -1,0 +1,52 @@
+package PayconiqRestAssuredBDDFramework.testscript;
+
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import PayconiqRestAssuredBDDFramework.util.*;
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+import static org.testng.Assert.assertEquals;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.testng.Assert;
+
+public class TestsApi {
+	 
+	@BeforeClass
+    public void setup (){
+        //Test Setup
+        Base.setBaseURI("https://api.github.com/gists"); //Setup Base URL
+        //Base.setBasePath("search"); //Setup Base Path
+        Base.setContentType(ContentType.JSON); //Setup Content Type
+    }
+	
+	
+	@Test(priority = 1)
+	public void postGist() {
+		Response postGistResponse =Base.setResponse(baseURI);
+		JSONObject postGistResponseBody=Base.getResponseBody(postGistResponse);
+		
+		//Verify Response Status Code
+		UtilMethods.checkStatusIs200(postGistResponse);
+		
+		// Get the desired value of a parameter
+		String gistId = postGistResponseBody.getString("id");
+
+		// Printing Gist Id in Console
+		System.out.println("Gist id is:" + gistId );
+		
+		//Verify description
+		String expectedDescriptionValue ="Hello World Examples";
+		UtilMethods.assertParameterValue(postGistResponseBody,expectedDescriptionValue);
+	
+	}
+}
+

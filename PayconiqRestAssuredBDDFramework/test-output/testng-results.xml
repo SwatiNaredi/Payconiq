@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" ignored="0" total="5" passed="5">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="7942" started-at="2020-03-18T18:21:09 IST" finished-at="2020-03-18T18:21:17 IST">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="7942" started-at="2020-03-18T18:21:09 IST" finished-at="2020-03-18T18:21:17 IST">
+      <class name="PayconiqRestAssuredBDDFramework.testscript.TestsApi">
+        <test-method status="PASS" signature="setup()[pri:0, instance:PayconiqRestAssuredBDDFramework.testscript.TestsApi@7791a895]" name="setup" is-config="true" duration-ms="638" started-at="2020-03-18T18:21:09 IST" finished-at="2020-03-18T18:21:10 IST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="postGist()[pri:1, instance:PayconiqRestAssuredBDDFramework.testscript.TestsApi@7791a895]" name="postGist" duration-ms="4012" started-at="2020-03-18T18:21:10 IST" finished-at="2020-03-18T18:21:14 IST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- postGist -->
+        <test-method status="PASS" signature="getGist()[pri:2, instance:PayconiqRestAssuredBDDFramework.testscript.TestsApi@7791a895]" name="getGist" duration-ms="1205" started-at="2020-03-18T18:21:14 IST" finished-at="2020-03-18T18:21:15 IST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getGist -->
+        <test-method status="PASS" signature="patchGist()[pri:3, instance:PayconiqRestAssuredBDDFramework.testscript.TestsApi@7791a895]" name="patchGist" duration-ms="1219" started-at="2020-03-18T18:21:15 IST" finished-at="2020-03-18T18:21:16 IST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- patchGist -->
+        <test-method status="PASS" signature="deleteGist()[pri:4, instance:PayconiqRestAssuredBDDFramework.testscript.TestsApi@7791a895]" name="deleteGist" duration-ms="437" started-at="2020-03-18T18:21:16 IST" finished-at="2020-03-18T18:21:17 IST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- deleteGist -->
+        <test-method status="PASS" signature="getGistAfterDelete()[pri:5, instance:PayconiqRestAssuredBDDFramework.testscript.TestsApi@7791a895]" name="getGistAfterDelete" duration-ms="339" started-at="2020-03-18T18:21:17 IST" finished-at="2020-03-18T18:21:17 IST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- getGistAfterDelete -->
+        <test-method status="PASS" signature="afterTest()[pri:0, instance:PayconiqRestAssuredBDDFramework.testscript.TestsApi@7791a895]" name="afterTest" is-config="true" duration-ms="1" started-at="2020-03-18T18:21:17 IST" finished-at="2020-03-18T18:21:17 IST">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterTest -->
+      </class> <!-- PayconiqRestAssuredBDDFramework.testscript.TestsApi -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

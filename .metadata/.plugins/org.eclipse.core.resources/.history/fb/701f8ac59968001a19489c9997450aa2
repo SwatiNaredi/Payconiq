@@ -1,0 +1,59 @@
+package PayconiqRestAssuredBDDFramework.util;
+
+import static io.restassured.RestAssured.given;
+
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+import static org.hamcrest.Matchers.*;
+
+import org.json.JSONObject;
+
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+public class BasicAuthentication {
+
+	/*
+	 * @BeforeTest public void basicAuthentication() {
+	 * 
+	 * given().auth().preemptive().basic("rohit1212s",
+	 * "Winnner1").when().get("https://api.github.com/gists").then()
+	 * .assertThat().statusCode(200);
+	 * 
+	 * }
+	 */
+
+	@BeforeTest
+	
+	  public void verifyDescription1() { String restAPIUrl =
+	  "https://api.github.com/gists";
+	  	  
+	  RequestSpecBuilder builder = new RequestSpecBuilder(); RequestSpecification
+	  requestSpec = builder.build();
+	  
+	  Response response = (Response) given().auth().preemptive().basic("rohit1212s",
+	  "Winnner1") .spec(requestSpec).when().post(restAPIUrl).then().assertThat().statusCode(200);
+	  System.out.println(response.asString());
+	  JSONObject JSONResponseBody = new JSONObject(response.body().asString());
+		 //Get the desired value of a parameter
+		 String result = JSONResponseBody.getString("id");
+		 
+		 //Check the Result
+		 //Assert.assertEquals(result, "{expectedValue}");
+		 
+		 System.out.println(result);
+	  
+	  }
+	 
+	@Test
+	public void verifyDescription() {
+
+		
+		  given(). when(). post("https://api.github.com/gists").
+		  then().body("description", equalToIgnoringCase("Hello World Examples"));
+		 
+		}
+	
+
+}

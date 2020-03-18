@@ -1,0 +1,5 @@
+package PayconiqRestAssuredBDDFramework.testscript;
+
+public class CrudGistApi {
+
+}

@@ -1,0 +1,23 @@
+package PayconiqRestAssuredBDDFramework.util;
+
+import static io.restassured.RestAssured.given;
+
+import org.testng.annotations.BeforeTest;
+
+public class BasicAuthentication {
+	
+	@BeforeTest
+	public void basicAuthentication() {
+		 
+		given().auth().preemptive().basic("rohit1212s", "Winnner1").
+		when()
+		.get("https://gist.github.com/rohit1212s")
+		.getStatusCode();
+		
+		
+		
+		
+			
+	}
+
+}

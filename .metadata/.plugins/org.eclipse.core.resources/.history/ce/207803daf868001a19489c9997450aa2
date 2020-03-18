@@ -1,0 +1,97 @@
+package PayconiqRestAssuredBDDFramework.util;
+
+import static io.restassured.RestAssured.given;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+import static org.hamcrest.Matchers.*;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+ 
+
+public class BasicAuthentication {
+
+	public JSONObject JSONResponseBody=null;
+
+	@BeforeTest
+	
+	  public void verifyDescription1() { 
+		
+		 //Rest API's URL
+		 String restAPIUrl = "https://api.github.com/gists";
+		 
+		 //API Body
+		 String apiBody = "{\r\n" + 
+		 		"  \"description\": \"Hello World Examples\",\r\n" + 
+		 		"  \"public\": true,\r\n" + 
+		 		"  \"files\": {\r\n" + 
+		 		"    \"hello_world_python.txt\": {\r\n" + 
+		 		"      \"content\": \"Run `python hello_world.py` to print Hello World\"\r\n" + 
+		 		"    }\r\n" + 
+		 		"  }\r\n" + 
+		 		"}";
+		 
+		 // Building request by using requestSpecBuilder
+		 RequestSpecBuilder builder = new RequestSpecBuilder();
+		 
+		 //Set API's Body
+		 builder.setBody(apiBody);
+		 
+		 //Setting content type as application/json
+		 builder.setContentType("application/json; charset=UTF-8");
+		 
+		 RequestSpecification requestSpec = builder.build();
+		 
+		 //Making post request with authentication or leave blank if you don't have credentials like: basic("","")
+		 Response response = given().auth().preemptive().basic("rohit1212s", "Winnner1")
+		 .spec(requestSpec).when().post(restAPIUrl);
+		 
+		  JSONResponseBody = new JSONObject(response.body().asString());
+	  
+	  }
+	 
+	
+	@Test(priority = 1)
+	public void postGist() throws JSONException, InterruptedException {
+
+		// API Body
+		String apiBody = "{\r\n" + "  \"description\": \"Hello World Examples\",\r\n" + "  \"public\": true,\r\n"
+				+ "  \"files\": {\r\n" + "    \"hello_world_python.txt\": {\r\n"
+				+ "      \"content\": \"Run `python hello_world.py` to print Hello World\"\r\n" + "    }\r\n"
+				+ "  }\r\n" + "}";
+
+		// Building request by using requestSpecBuilder
+		RequestSpecBuilder builder = new RequestSpecBuilder();
+
+		// Set API's Body
+		builder.setBody(apiBody);
+
+		// Setting content type as application/json
+		builder.setContentType("application/json; charset=UTF-8");
+
+		requestSpec = builder.build();
+
+		// Making post request with authentication or leave blank if you don't have
+		// credentials like: basic("","")
+		Response response = given().auth().preemptive().basic("rohit1212s", "Winnner1").spec(requestSpec).when()
+				.post(restAPIUrl);
+
+		JSONResponseBody = new JSONObject(response.body().asString());
+
+		// Get the desired value of a parameter
+		String result = JSONResponseBody.getString("id");
+
+		// Check the Result--ID for verification purpose for another three operations
+		System.out.println(result);
+		Assert.assertEquals(JSONResponseBody.getString("description"), "Hello World Examples");
+
+	}
+
+}

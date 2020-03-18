@@ -1,0 +1,116 @@
+package PayconiqRestAssuredBDDFramework.testscript;
+
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import PayconiqRestAssuredBDDFramework.util.*;
+import io.restassured.response.Response;
+import static io.restassured.RestAssured.*;
+import org.json.JSONObject;
+import static org.hamcrest.Matchers.*;
+
+public class TestsApi {
+	
+	public JSONObject JSONResponseBody = null;
+	public Response response=null;
+
+	 
+	@BeforeClass
+    public void setup (){
+		//Setup Base URL
+        Base.setBaseURI("https://api.github.com/gists"); 
+    }
+	
+	
+	@Test(priority = 1)
+	public void postGist() {
+		
+		String apiBody = "{\r\n" + "  \"description\": \"Hello World Examples\",\r\n" + "  \"public\": true,\r\n"
+				+ "  \"files\": {\r\n" + "    \"hello_world_python.txt\": {\r\n"
+				+ "      \"content\": \"Run `python hello_world.py` to print Hello World\"\r\n" + "    }\r\n"
+				+ "  }\r\n" + "}";
+		
+		response=Base.getResponse(baseURI,apiBody,"Post");
+		JSONObject postGistResponseBody=Base.getResponseBody(response);
+		
+		//Verify Response Status Code
+		UtilMethods.checkResponseStatusCode(response,201);
+		
+		// Get the desired value of a parameter
+		String gistId = postGistResponseBody.getString("id");
+
+		// Printing GIST Id in Console
+		System.out.println("Gist id in Post Response is:" + gistId );
+		
+		//Verify description
+		String expectedDescriptionValue ="Hello World Examples";
+		UtilMethods.assertParameterValue(postGistResponseBody,"description",expectedDescriptionValue);
+		
+		//Verify whether Public or Private
+		String expectedpublicValue ="true";
+		UtilMethods.assertParameterValue(postGistResponseBody,"public",expectedpublicValue);
+		
+	}
+	
+	@Test(priority = 2)
+	public void getGist() {
+		JSONResponseBody = new JSONObject(response.body().asString());
+		baseURI = baseURI + "/" + JSONResponseBody.getString("id");
+		
+		//Below is another way of calling API request (apart from what is mentioned in Base.java File)
+		//Calling the Get Request and verifying the login in the response JSON
+		given().
+		when().
+			get(baseURI).
+		then().
+		assertThat().
+		statusCode(200).
+		and().
+		body("owner.login", equalToIgnoringCase("rohit1212s")); 
+		
+		//Similarly we can verify whether the file name, file content and description as passed in the post request
+		
+	}
+	
+	@Test(priority = 3)
+	public void patchGist() {
+		String apiBody = "{\r\n" + "  \"description\": \"Hello World Examples Update\",\r\n" + "  \"public\": true,\r\n"
+				+ "  \"files\": {\r\n" + "    \"hello_world_python.txt\": {\r\n"
+				+ "      \"content\": \"Run `python hello_world.py` to print Hello World\"\r\n" + "    }\r\n"
+				+ "  }\r\n" + "}";
+		Response patchGistResponse=Base.getResponse(baseURI,apiBody,"Patch");
+		JSONObject patchGistResponseBody=Base.getResponseBody(patchGistResponse);
+		
+		//Verify Response Status Code
+		UtilMethods.checkResponseStatusCode(patchGistResponse,200);
+		
+		// Printing GIST Id in Console
+		String gistId = patchGistResponseBody.getString("id");
+		System.out.println("Gist id in Update Response is:" + gistId );
+		
+		//Verify Id
+		UtilMethods.assertParameterValue(patchGistResponseBody,"id",gistId);
+	
+		//Verify description
+		String expectedDescriptionValue ="Hello World Examples Update";
+		UtilMethods.assertParameterValue(patchGistResponseBody,"description",expectedDescriptionValue);
+	}
+	
+	@Test(priority = 4)
+	public void deleteGist() {
+		String apiBody = "";	
+		Response deleteGistResponse=Base.getResponse(baseURI,apiBody,"Delete");
+		
+		//Verify Response Status Code
+		UtilMethods.checkResponseStatusCode(deleteGistResponse,204);
+
+	}
+	
+	  @AfterTest
+	    public void afterTest (){
+	        //Reset Values
+		  Base.resetBaseURI();
+		  Base.resetBasePath();
+	    }
+
+}

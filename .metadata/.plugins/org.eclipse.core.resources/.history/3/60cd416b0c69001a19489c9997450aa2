@@ -1,0 +1,139 @@
+package PayconiqRestAssuredBDDFramework.testscript;
+
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import PayconiqRestAssuredBDDFramework.util.*;
+import groovy.json.JsonSlurper;
+import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+import static io.restassured.RestAssured.*;
+import static org.testng.Assert.assertEquals;
+
+import java.util.Map;
+
+import org.json.JSONObject;
+
+public class TestsApi {
+	 
+	@BeforeClass
+    public void setup (){
+		//Setup Base URL
+        Base.setBaseURI("https://api.github.com/gists"); 
+    }
+	
+	
+	@Test(priority = 1)
+	public void postGist() {
+		
+		String apiBody = "{\r\n" + "  \"description\": \"Hello World Examples\",\r\n" + "  \"public\": true,\r\n"
+				+ "  \"files\": {\r\n" + "    \"hello_world_python.txt\": {\r\n"
+				+ "      \"content\": \"Run `python hello_world.py` to print Hello World\"\r\n" + "    }\r\n"
+				+ "  }\r\n" + "}";
+		
+		Response postGistResponse=Base.getResponse(baseURI,apiBody,"Post");
+		JSONObject postGistResponseBody=Base.getResponseBody(postGistResponse);
+		String responseString= postGistResponseBody.toString();
+		
+		//Verify Response Status Code
+		UtilMethods.checkResponseStatusCode(postGistResponse,201);
+		
+		// Get the desired value of a parameter
+		String gistId = postGistResponseBody.getString("id");
+
+		// Printing Gist Id in Console
+		System.out.println("Gist id is:" + gistId );
+		
+		//Verify description
+		String expectedDescriptionValue ="Hello World Examples";
+		UtilMethods.assertParameterValue(postGistResponseBody,"description",expectedDescriptionValue);
+		
+		//Verify whether Public or Private
+		String expectedpublicValue ="true";
+		UtilMethods.assertParameterValue(postGistResponseBody,"public",expectedpublicValue);
+		
+//		//Verify whether Login id is expected or not
+//		String expectedLoginId ="rohit1212s";
+//		UtilMethods.assertParameterValue(postGistResponseBody,"owner.login",expectedLoginId);
+		
+//		//Verify whether FileName is correct or not
+//		String expectedFileName ="hello_world_python.txt";
+//		UtilMethods.assertParameterValue(postGistResponseBody,"filename",expectedFileName);
+//		
+//		//Verify whether Content is expected or not
+//		String expectedContent ="Run `python hello_world.py` to print Hello World";
+//		UtilMethods.assertParameterValue(postGistResponseBody,"content",expectedContent);
+	
+	
+	}
+	
+	@Test(priority = 2)
+	public void getGist() {
+		Response postGistResponse=Base.getResponse(baseURI);
+		JSONObject postGistResponseBody=Base.getResponseBody(postGistResponse);
+		String responseString= postGistResponseBody.toString();
+		
+		//Verify Response Status Code
+		UtilMethods.checkResponseStatusCode(postGistResponse,201);
+		
+		// Get the desired value of a parameter
+		String gistId = postGistResponseBody.getString("id");
+
+		// Printing Gist Id in Console
+		System.out.println("Gist id is:" + gistId );
+
+	}
+	
+	
+	@Test(priority = 3)
+	public void updateGist() {
+		// API Body
+				String apiBody = "{\r\n" + "  \"description\": \"Hello World Examples update\",\r\n" + "  \"public\": true,\r\n"
+						+ "  \"files\": {\r\n" + "    \"hello_world_python.txt\": {\r\n"
+						+ "      \"content\": \"Run `python hello_world.py` to print Hello World\"\r\n" + "    }\r\n"
+						+ "  }\r\n" + "}";
+
+				// Building request by using requestSpecBuilder
+				RequestSpecBuilder builder = new RequestSpecBuilder();
+
+				// Set API's Body
+				builder.setBody(apiBody);
+
+				// Setting content type as application/json
+				builder.setContentType("application/json; charset=UTF-8");
+
+				requestSpec = builder.build();
+
+				// Making post request with authentication
+				// credentials like: basic("","")
+				response = given().auth().preemptive().basic("rohit1212s", "Winnner1").spec(requestSpec).when()
+						.patch(restAPIUrl +"/"+JSONResponseBody.getString("id"));
+				  String json = response.asString();
+				  JsonPath jp = new JsonPath(json);
+				  assertEquals("Hello World Examples update", jp.get("description"));		
+
+	}
+	
+	@Test(priority = 4)
+	public void deleteGist() {
+				
+		 RequestSpecification request = RestAssured.given(); 
+		 
+		 // Add a header stating the Request body is a JSON
+		 request.header("Content-Type", "application/json"); 
+		 request.auth().preemptive().basic("rohit1212s", "Winnner1");
+		 
+		 // Delete the request and check the response
+		 response = request.delete(restAPIUrl +"/"+JSONResponseBody.getString("id")); 
+		 assertEquals(response.getStatusCode(),204);
+		
+
+	}
+	
+	
+}
+

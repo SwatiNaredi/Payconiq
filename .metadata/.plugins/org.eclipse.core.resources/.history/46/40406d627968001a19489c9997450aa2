@@ -1,0 +1,27 @@
+package PayconiqRestAssuredBDDFramework.testscript;
+
+import org.testng.annotations.Test;
+
+import PayconiqRestAssuredBDDFramework.util.BasicAuthentication;
+import io.restassured.response.Response;
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+public class PostCallBDD extends BasicAuthentication{
+
+	@Test
+	public void verifyDescription() {
+
+		/*
+		 * given(). when(). post("https://api.github.com/gists").
+		 * then().body("description", equalToIgnoringCase("Hello World Examples"));
+		 */
+		
+		 Response resp = given().header("Authorization", "token "+"3a9fb81002dd82ef40eca04eb91fb903172e6494").
+		            post("https://api.github.com/gists");
+		    System.out.println(resp.asString());
+			
+	}
+
+}

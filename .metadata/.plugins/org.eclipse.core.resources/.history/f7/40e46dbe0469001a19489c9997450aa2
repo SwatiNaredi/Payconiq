@@ -1,0 +1,45 @@
+package PayconiqRestAssuredBDDFramework.util;
+
+
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
+
+import static io.restassured.RestAssured.given;
+import static org.testng.Assert.assertEquals;
+ 
+import java.util.*;
+
+import org.json.JSONObject;
+import org.testng.Assert;
+ 
+ 
+public class UtilMethods {
+	
+
+    /*
+    Verify the http response status returned. Check Status Code is 200?
+    We can use Rest Assured library's response's getStatusCode method
+    */
+    public static void checkStatusIs200 (Response res) {
+    	assertEquals(200, res.getStatusCode(),"Status is not 200");
+    }
+    
+    public static void checkStatusIs201 (Response res) {
+    	int actual = res.getStatusCode();
+    	System.out.println("actual code in output is"+ actual);
+    	assertEquals(200, res.getStatusCode(),"Status is not 201");
+    }
+    
+    public static void checkStatusIs204 (Response res) {
+    	assertEquals(200, res.getStatusCode(),"Status is not 204");
+    }
+ 
+    public static void assertParameterValue (JSONObject JSONResponseBody,String ExpectedValue) {
+    	Assert.assertEquals(JSONResponseBody.getString("description"), ExpectedValue);
+    }
+ 
+   
+    
+
+}

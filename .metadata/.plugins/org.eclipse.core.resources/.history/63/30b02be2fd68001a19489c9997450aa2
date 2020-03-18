@@ -1,0 +1,5 @@
+package PayconiqRestAssuredBDDFramework.util;
+
+public class UtilMethods {
+
+}

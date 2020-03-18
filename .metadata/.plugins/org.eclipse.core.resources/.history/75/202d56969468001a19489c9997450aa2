@@ -1,0 +1,53 @@
+package PayconiqRestAssuredBDDFramework.testscript;
+
+import org.testng.annotations.Test;
+
+import PayconiqRestAssuredBDDFramework.util.BasicAuthentication;
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
+
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.testng.Assert;
+public class PostCallBDD  {
+
+	@Test
+	public void postGist() throws JSONException,InterruptedException {
+		
+	 //API Body
+	 String apiBody = "{\r\n" + 
+	 		"  \"description\": \"Hello World Examples\",\r\n" + 
+	 		"  \"public\": true,\r\n" + 
+	 		"  \"files\": {\r\n" + 
+	 		"    \"hello_world_python.txt\": {\r\n" + 
+	 		"      \"content\": \"Run `python hello_world.py` to print Hello World\"\r\n" + 
+	 		"    }\r\n" + 
+	 		"  }\r\n" + 
+	 		"}";
+	 
+	 // Building request by using requestSpecBuilder
+	 RequestSpecBuilder builder = new RequestSpecBuilder();
+	 
+	 //Set API's Body
+	 builder.setBody(apiBody);
+	 
+	 //Setting content type as application/json
+	 builder.setContentType("application/json; charset=UTF-8");
+	 	 
+	 }
+	
+	@Test
+	public void verifyDescription() {
+
+		
+		  given(). when(). post("https://api.github.com/gists").
+		  then().body("description", equalToIgnoringCase("Hello World Examples"));
+		 
+		}
+	
+	
+}
